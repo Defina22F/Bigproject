@@ -8,78 +8,108 @@ rfc=pickle.load(open('RFC_model.pkl','rb'))
 sc=pickle.load(open('Scaler_model.pkl','rb'))
 
 #judul web
-st.title("prediksi NObayes dengan RFC")
+st.title("Prediksi Obesitas dengan RFC")
 
 #untuk input data
 col1, col2=st.columns(2)
 with col1:
-    Age=st.text_input("Age")
+    Age=st.text_input("Umur")
     if Age != '':
         Age = float(Age)  # Konversi ke float
 with col2:
-    Height=st.text_input("Height")
+    Height=st.text_input("Tinggi Badan")
     if Height != '':
         Height = float(Height)  # Konversi ke float
 with col1:
-    Weight=st.text_input("Weight")
+    Weight=st.text_input("Berat Badan")
     if Weight != '':
          Weight= float(Weight)  # Konversi ke float
 with col2:
-    FCVC=st.text_input("FCVC")
+    FCVC=st.text_input("Jumlah Makan sayur dalam sehari")
     if FCVC != '':
          FCVC= float(FCVC)  # Konversi ke float
 with col1:
-    NCP=st.text_input("NCP")
+    NCP=st.text_input("Jumlah makan dalam sehari")
     if NCP != '':
         NCP = float(NCP)  # Konversi ke float
 with col2:
-    CH2O=st.text_input("CH2O")
+    CH2O=st.text_input("Minum dalam sehari (Liter)")
     if CH2O != '':
         CH2O = float(CH2O)  # Konversi ke float
 with col1:
-    FAF=st.text_input("FAF")
+    FAF=st.text_input("Olahraga dalam seminggu")
     if FAF != '':
         FAF = float(FAF)  # Konversi ke float
 with col2:
-    TUE=st.text_input("TUE")
+    TUE=st.text_input("Lama waktu didepan laptop (Jam)")
     if TUE != '':
         TUE = float(TUE)  # Konversi ke float
 with col1:
-    Gender=st.text_input("Gender")
-    if Gender != '':
-        Gender = float(Gender)  # Konversi ke float
+    Gender=st.radio("Gender",['Pria','Wanita'])
+    if Gender == 'Wanita':
+        Gender = 0.0
+    else:
+        Gender = 1.0
 with col2:
-    family_history_with_overweight=st.text_input("family_history_with_overweight")
-    if family_history_with_overweight != '':
-        family_history_with_overweight = float(family_history_with_overweight)  # Konversi ke float
+    family_history_with_overweight=st.radio("Riwayat Obesitas Keluarga",['Ya','Tidak'])
+    if family_history_with_overweight == 'Tidak':
+        family_history_with_overweight = 0.0
+    else:
+        family_history_with_overweight = 1.0
 with col1:
-    FAVC=st.text_input("FAVC")
-    if FAVC != '':
-        FAVC = float(FAVC)  # Konversi ke float
+    FAVC=st.radio("Makan Tinggi Kalori",['Ya','Tidak'])
+    if FAVC == 'Tidak':
+        FAVC = 0.0
+    else:
+        FAVC = 1.0
 with col2:
-    CAEC=st.text_input("CAEC")
-    if CAEC != '':
-        CAEC = float(CAEC)  # Konversi ke float
+    CAEC=st.radio("Jumlah Mengemil dalam 1 Hari",['Terkadang','Sering','Selalu','Tidak'])
+    if CAEC == 'Tidak':
+        CAEC = 0.0
+    elif CAEC == 'Selalu':
+        CAEC = 1.0
+    elif CAEC == 'Sering':
+        CAEC = 2.0
+    elif CAEC == 'Terkadang':
+        CAEC = 3.0
 with col1:
-    SCC=st.text_input("SCC")
-    if SCC != '':
-        SCC = float(SCC)  # Konversi ke float
+    SCC=st.radio("Apakah Anda memantau kalori pada setiap makan",['Tidak','Ya'])
+    if SCC == 'Tidak':
+        SCC = 0.0
+    else:
+        SCC = 1.0
 with col2:
-    CALC=st.text_input("CALC")
-    if CALC != '':
-        CALC = float(CALC)
+    CALC=st.radio("Minum Alkohol",['Terkadang','Sering','Selalu','Tidak'])
+    if CALC == 'Tidak':
+        CALC = 0.0
+    elif CALC == 'Selalu':
+        CALC = 1.0
+    elif CALC == 'Sering':
+        CALC = 2.0
+    elif CALC == 'Terkadang':
+        CALC = 3.0
 with col1:
-    MTRANS=st.text_input("MTRANS")
-    if MTRANS != '':
-        MTRANS = float(MTRANS)
+    MTRANS=st.radio("Transportasi",['Transportasi_publik','Automobile','Jalan','Motor','Sepeda'])
+    if MTRANS == 'Sepeda':
+        MTRANS = 0.0
+    elif MTRANS == 'Motor':
+        MTRANS = 1.0
+    elif MTRANS == 'Jalan':
+        MTRANS = 2.0
+    elif MTRANS == 'Automobile':
+        MTRANS = 3.0
+    elif MTRANS == 'Transportasi_publik':
+        MTRANS = 4.0
 with col2:
-    SMOKE=st.text_input("SMOKE")
-    if SMOKE != '':
-        SMOKE = float(SMOKE)
+    SMOKE=st.radio("Merokok",['NO','YES'])
+    if SMOKE == 'NO':
+        SMOKE = 0.0
+    else:
+        SMOKE = 1.0
 
 #kode untuk predikisi
 Prediksi_Nobayes =''
-if st.button("Prediksi SEKARANG"):
+if st.button("PREDIKSI SEKARANG"):
     # Mengubah argumen menjadi array numpy dua dimensi
     s=sc.transform([[Age,Height,Weight,FCVC,NCP,CH2O,FAF,TUE]])
     # Melakukan prediksi dengan XGBoost
